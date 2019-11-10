@@ -5,6 +5,7 @@ from __future__ import print_function
 import os
 import sys
 
+
 #
 # Complete the simpleArraySum function below.
 #
@@ -13,6 +14,7 @@ def simpleArraySum(ar):
     for values in ar:
         sum += values
     return sum
+
 
 if __name__ == '__main__':
     fptr = open('out', 'w')
