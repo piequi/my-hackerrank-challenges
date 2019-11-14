@@ -9,23 +9,49 @@ import sys
 # Complete the activityNotifications function below.
 def activityNotifications(expenditure, d):
 
-    def getMedian(e, a, b):
-        trail = e[a:b]
-        trail.sort()
-        nbtrail = int(b-a)
-        if nbtrail % 2 != 0:
-            m = trail[int(nbtrail/2) + 1]
-        elif nbtrail % 2 == 0:
-            m = (trail[int(nbtrail/2 - 1)] + trail[int(nbtrail/2)]) / 2
-        return m
+    def getMedian(v, d):
+        median = 0
+        if d % 2 != 0:
+            median_pos = int(d/2) + 1
+            for value, count in v.items():
+                if median_pos > 0:
+                    median_pos -= count
+                    median = value
+                else:
+                    break
+        elif d % 2 == 0:
+            median1 = median2 = 0
+            median_pos1 = int(d/2)
+            median_pos2 = int(d/2) + 1
+            for value, count in v.items():
+                if median_pos1 > 0:
+                    median_pos1 -= count
+                    median1 = value
+
+                if median_pos2 > 0:
+                    median_pos2 -= count
+                    median2 = value
+                else:
+                    break
+            median = (median1 + median2) / 2
+
+        return median
 
     notifications = 0
     nbexpenditure = len(expenditure)
+    valueshash = {}
 
-    for exp in range(d, nbexpenditure):
-        median = getMedian(expenditure, exp-d, exp-1)
-        if expenditure[exp] > median * 2:
-            notifications += 1
+    for exp in range(nbexpenditure):
+        if expenditure[exp] in valueshash:
+            valueshash[expenditure[exp]] += 1
+        else:
+            valueshash[expenditure[exp]] = 1
+        if exp >= d:
+            median = getMedian(valueshash, d)
+            if expenditure[exp] >= median * 2:
+                notifications += 1
+            valueshash[expenditure[exp-d]] -= 1
+
 
     return notifications
 
